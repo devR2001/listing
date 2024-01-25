@@ -17,31 +17,35 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { ref, onMounted } from "vue";
 import ListingsListItem from "./ListingsListItem";
 import Notification from "./Notification";
+import { useStore } from "vuex";
 
 export default {
   name: "ListingsList",
-  props: ["listings", "isDark"],
-  data() {
-    return {
-      notification: null,
-    };
-  },
-  methods: {
-    ...mapActions(["resetListings"]),
-  },
   components: {
     ListingsListItem,
     Notification,
   },
-  mounted() {
-    this.notification = "Herzlichen Willkommen!";
+  props: ["listings", "isDark"],
+  setup() {
+    const store = useStore();
+    const notification = ref(null);
 
-    setTimeout(() => {
-      this.notification = null;
-    }, 3000);
+    const resetListings = () => store.dispatch("resetListings");
+
+    onMounted(() => {
+      notification.value = "Herzlichen Willkommen!";
+
+      setTimeout(() => {
+        notification.value = null;
+      }, 3000);
+    });
+    return {
+      notification,
+      resetListings,
+    };
   },
 };
 </script>
