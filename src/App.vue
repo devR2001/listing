@@ -21,32 +21,36 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { ref, computed } from "vue";
+import { useStore } from "vuex";
 import ListingsList from "./components/ListingsList";
 
 export default {
   name: "App",
-  data() {
-    return {
-      isDark: false,
-    };
-  },
-  computed: {
-    ...mapGetters(["listings", "loading"]),
-    darkModeButtonText() {
-      return this.isDark ? "Helle Ansicht" : "Dunkle Ansicht";
-    },
-  },
-  methods: {
-    toggleDarkMode() {
-      this.isDark = !this.isDark;
-    },
-  },
-  created() {
-    this.$store.dispatch("getListings");
-  },
   components: {
     ListingsList,
+  },
+  setup() {
+    const store = useStore();
+
+    const isDark = ref(false);
+    const darkModeButtonText = computed(() => {
+      return isDark.value ? "Helle Ansicht" : "Dunkle Ansicht";
+    });
+    const listings = computed(() => store.getters.listings);
+    const loading = computed(() => store.getters.loading);
+    const toggleDarkMode = () => {
+      isDark.value = !isDark.value;
+    };
+    store.dispatch("getListings");
+
+    return {
+      isDark,
+      darkModeButtonText,
+      listings,
+      loading,
+      toggleDarkMode,
+    };
   },
 };
 </script>
