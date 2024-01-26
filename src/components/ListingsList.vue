@@ -1,6 +1,10 @@
 <template>
   <div id="listings">
-    <Notification :notification="notification" :isDark="isDark" />
+    <Notification
+      :notification="notification"
+      :toggleNotification="toggleNotification"
+      :isDark="isDark"
+    />
     <div class="row row-cols-1 row-cols-md-3 g-4">
       <div class="col" v-for="listing in listings" :key="listing.id">
         <ListingsListItem :listing="listing" :isDark="isDark" />
@@ -17,9 +21,10 @@
 </template>
 
 <script>
-import { ref, onMounted } from "vue";
+import { onMounted } from "vue";
 import ListingsListItem from "./ListingsListItem";
 import Notification from "./Notification";
+import useNotification from "@/hooks/useNotification";
 import { useStore } from "vuex";
 
 export default {
@@ -31,20 +36,28 @@ export default {
   props: ["listings", "isDark"],
   setup() {
     const store = useStore();
-    const notification = ref(null);
+    const { notification, setNotification, toggleNotification } =
+      useNotification();
+    // const notification = ref(null);
 
-    const resetListings = () => store.dispatch("resetListings");
+    const resetListings = () => {
+      setNotification("Liste wurde zurückgesetzt.");
+      store.dispatch("resetListings");
+    };
 
     onMounted(() => {
-      notification.value = "Herzlichen Willkommen!";
+      setNotification("Herzlich Willkommen!");
+      // notification.value = "Herzlichen Willkommen!";
 
-      setTimeout(() => {
-        notification.value = null;
-      }, 3000);
+      // setTimeout(() => {
+      //   notification.value = null;
+      // }, 3000);
     });
+
     return {
       notification,
       resetListings,
+      toggleNotification,
     };
   },
 };
