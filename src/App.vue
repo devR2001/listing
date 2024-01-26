@@ -37,11 +37,12 @@ export default {
     const darkModeButtonText = computed(() => {
       return isDark.value ? "Helle Ansicht" : "Dunkle Ansicht";
     });
-    const listings = computed(() => store.getters.listings);
-    const loading = computed(() => store.getters.loading);
     const toggleDarkMode = () => {
       isDark.value = !isDark.value;
     };
+    const listings = computed(() => store.getters.listings);
+    const loading = computed(() => store.getters.loading);
+
     store.dispatch("getListings");
 
     return {
