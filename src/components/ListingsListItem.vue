@@ -46,13 +46,18 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { useStore } from "vuex";
+// import { mapActions } from "vuex";
 
 export default {
   name: "ListingsListItem",
   props: ["listing", "isDark"],
-  methods: {
-    ...mapActions(["removeListing"]),
+  setup(props) {
+    const store = useStore();
+    const removeListing = () => store.dispatch("removeListing", props.listing);
+    return {
+      removeListing,
+    };
   },
 };
 </script>
