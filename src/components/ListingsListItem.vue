@@ -48,13 +48,18 @@
 <script>
 import { useStore } from "vuex";
 // import { mapActions } from "vuex";
+// import useNotification from "../hooks/useNotification";
 
 export default {
   name: "ListingsListItem",
   props: ["listing", "isDark"],
   setup(props) {
     const store = useStore();
-    const removeListing = () => store.dispatch("removeListing", props.listing);
+    // const { setNotification } = useNotification();
+    const removeListing = () => {
+      // setNotification("Element von der Liste entfernt.");
+      store.dispatch("removeListing", props.listing);
+    };
     return {
       removeListing,
     };
