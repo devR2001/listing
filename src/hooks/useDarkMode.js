@@ -1,6 +1,5 @@
 import { ref } from "vue";
 import useNotification from "./useNotification";
-import { set } from "core-js/core/dict";
 
 const { setNotification } = useNotification();
 
