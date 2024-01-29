@@ -1,5 +1,5 @@
 <template>
-  <div class="app" :class="{ 'bg-dark': isDark }">
+  <div class="app" :class="{ 'bg-dark': darkMode }">
     <div class="container mt-5">
       <div v-if="loading">
         <div class="progress" style="height: 10px">
@@ -7,11 +7,11 @@
         </div>
       </div>
       <div v-if="!loading">
-        <ListingsList :listings="listings" :isDark="isDark" />
+        <ListingsList :listings="listings" />
       </div>
       <button
         class="btn mt-2"
-        :class="{ 'btn-light': isDark, 'btn-dark': !isDark }"
+        :class="{ 'btn-light': darkMode, 'btn-dark': !darkMode }"
         @click="toggleDarkMode"
       >
         {{ darkModeButtonText }}
@@ -21,9 +21,10 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { computed } from "vue";
 import { useStore } from "vuex";
 import ListingsList from "./components/ListingsList";
+import useDarkMode from "@/hooks/useDarkMode";
 
 export default {
   name: "App",
@@ -32,21 +33,20 @@ export default {
   },
   setup() {
     const store = useStore();
+    const { darkMode, toggleDarkMode } = useDarkMode();
 
-    const isDark = ref(false);
+    // const isDark = ref(false);
     const darkModeButtonText = computed(() => {
-      return isDark.value ? "Helle Ansicht" : "Dunkle Ansicht";
+      return darkMode.value ? "Helle Ansicht" : "Dunkle Ansicht";
     });
-    const toggleDarkMode = () => {
-      isDark.value = !isDark.value;
-    };
+
     const listings = computed(() => store.getters.listings);
     const loading = computed(() => store.getters.loading);
 
     store.dispatch("getListings");
 
     return {
-      isDark,
+      darkMode,
       darkModeButtonText,
       listings,
       loading,
