@@ -20,12 +20,12 @@
 </template>
 
 <script>
-import { onMounted } from "vue";
+import { onMounted, inject } from "vue";
 import ListingsListItem from "./ListingsListItem";
 import Notification from "./Notification";
 import useNotification from "@/hooks/useNotification";
 import useDarkMode from "@/hooks/useDarkMode";
-import { useStore } from "vuex";
+// import { useStore } from "vuex";
 
 export default {
   name: "ListingsList",
@@ -35,7 +35,8 @@ export default {
   },
   props: ["listings"],
   setup() {
-    const store = useStore();
+    // const store = useStore();
+    const store = inject("store");
     const { notification, setNotification, toggleNotification } =
       useNotification();
     const { darkMode } = useDarkMode();
@@ -43,6 +44,7 @@ export default {
 
     const resetListings = () => {
       setNotification("Liste wurde zurückgesetzt.");
+      store.actions.resetListings();
       store.dispatch("resetListings");
     };
 

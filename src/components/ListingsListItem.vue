@@ -49,7 +49,8 @@
 </template>
 
 <script>
-import { useStore } from "vuex";
+import { inject } from "vue";
+// import { useStore } from "vuex";
 import useDarkMode from "@/hooks/useDarkMode.js";
 // import { mapActions } from "vuex";
 // import useNotification from "../hooks/useNotification";
@@ -58,12 +59,14 @@ export default {
   name: "ListingsListItem",
   props: ["listing"],
   setup(props) {
-    const store = useStore();
+    const store = inject("store");
+    // const store = useStore();
     const { darkMode } = useDarkMode();
     // const { setNotification } = useNotification();
     const removeListing = () => {
       // setNotification("Element von der Liste entfernt.");
-      store.dispatch("removeListing", props.listing);
+      store.actions.removeListing(props.listing);
+      // store.dispatch("removeListing", props.listing);
     };
     return {
       removeListing,

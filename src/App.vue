@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import { computed } from "vue";
-import { useStore } from "vuex";
+import { computed, inject } from "vue";
+// import { useStore } from "vuex";
 import ListingsList from "./components/ListingsList";
 import useDarkMode from "@/hooks/useDarkMode";
 
@@ -32,7 +32,8 @@ export default {
     ListingsList,
   },
   setup() {
-    const store = useStore();
+    // const store = useStore();
+    const store = inject("store");
     const { darkMode, toggleDarkMode } = useDarkMode();
 
     // const isDark = ref(false);
@@ -40,11 +41,11 @@ export default {
       return darkMode.value ? "Helle Ansicht" : "Dunkle Ansicht";
     });
 
-    const listings = computed(() => store.getters.listings);
-    const loading = computed(() => store.getters.loading);
+    const listings = computed(() => store.state.listings);
+    const loading = computed(() => store.state.loading);
 
-    store.dispatch("getListings");
-
+    // store.dispatch("getListings");
+    store.actions.getListings();
     return {
       darkMode,
       darkModeButtonText,
